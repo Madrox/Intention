@@ -1,9 +1,11 @@
-const rules = require('./webpack.rules');
-const plugins = require('./webpack.plugins');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const rules = require("./webpack.rules");
+const plugins = require("./webpack.plugins");
+const { join } = require("path");
 
 rules.push({
   test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+  use: [{ loader: "style-loader" }, { loader: "css-loader" }],
 });
 
 module.exports = {
@@ -12,6 +14,9 @@ module.exports = {
   },
   plugins: plugins,
   resolve: {
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css']
+    alias: {
+      src: join(__dirname, "src"),
+    },
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".css"],
   },
 };

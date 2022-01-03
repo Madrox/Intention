@@ -26,6 +26,9 @@
  * ```
  */
 
-import './index.css';
-
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+// Add this to the end of the existing file
+import "antd/dist/antd.compact.css";
+import "antd/dist/antd.css";
+import "antd/dist/antd.dark.css";
+import "./app";
+import "./index.css";

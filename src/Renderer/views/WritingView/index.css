@@ -1,0 +1,6 @@
+.ql-snow {
+  border: none !important;
+}
+.ql-container {
+  max-height: calc(100% - 45px);
+}
