@@ -131,6 +131,7 @@ export const GlobalRoot: React.FC = () => {
           <Layout.Sider collapsible collapsed={hide} onCollapse={setHide}>
             <Menu mode="inline" style={{ borderRight: 0 }} selectable={false}>
               <Menu.Item
+                key="new entry"
                 icon={<PlusOutlined />}
                 onClick={() => {
                   const entry = {

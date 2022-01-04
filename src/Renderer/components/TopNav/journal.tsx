@@ -49,7 +49,7 @@ export const Journals: React.FC<Props> = (props) => {
         // visible={showPopover}
         // onVisibleChange={setShowPopover}
         overlay={
-          <Menu mode="inline" style={{ borderRight: 0, height: "100%" }}>
+          <Menu style={{ borderRight: 0, height: "100%" }}>
             <Menu.Item
               key="create"
               icon={<PlusOutlined />}
