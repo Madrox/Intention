@@ -1,20 +1,45 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "module": "commonjs",
+    "target": "ES6",
+    "module": "CommonJS",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "importHelpers": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "rootDir": ".",
     "outDir": "dist",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
-      "*": ["node_modules/*"]
-    }
+      "src/*": [
+        "./src/*"
+      ],
+      "*": [
+        "node_modules/*",
+        "./types/*",
+        "./models/*",
+        "./apis/*"
+      ]
+    },
+    "jsx": "react",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "types/**/*",
+    "apis/**/*",
+    "models/**/*"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./dist"
   ]
 }
