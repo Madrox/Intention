@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useParams } from "react-router-dom";
 import { Journal, Writing } from "src/Common/models/writing";
-import { getRelativeDate } from "src/Common/use-i18n";
 import { View } from "src/Renderer/components/Layout/View";
 import "./index.css";
 
@@ -15,26 +14,56 @@ export const WritingView: React.FC = () => {
 
   const [entry, setEntry] = useState<Writing | null>(null);
 
+  const [saved, setSaved] = useState(true);
+
+  const save = () => {
+    if (entry && journal && !saved) {
+      console.log("saving...");
+      setEntry({
+        addDate: entry.addDate || new Date(),
+        id: entry.id,
+        text: entry.text ?? "",
+        title: entry.title ?? "",
+        updateDate: new Date(),
+      });
+      window.writing.save(journal, entry);
+      setSaved(true);
+    }
+  };
+
   useEffect(() => {
     window.journals.list().then((journals) => {
       const j = journals.filter((j) => j.subdir === subdir)[0];
       setJournal(j);
       window.writing.get(j, id).then(setEntry);
     });
-  }, [subdir]);
+    return () => {
+      setEntry({ ...entry, updateDate: new Date() });
+      window.writing.save(journal, entry);
+    };
+  }, [subdir, id]);
 
   useEffect(() => {
     const handle = setInterval(() => {
-      setEntry({ ...entry, updateDate: new Date() });
-      window.writing.save(journal, entry);
-    }, 5000);
+      save();
+    }, 10000);
+
+    const manualSave = (ev: KeyboardEvent) => {
+      if (ev.ctrlKey && ev.key === "s" && !saved) {
+        save();
+      }
+    };
+
+    window.addEventListener("keydown", manualSave);
+
     return () => {
       clearInterval(handle);
+      window.removeEventListener("keydown", manualSave);
     };
-  }, []);
+  }, [journal, entry, saved]);
 
   return (
-    <View fullSize>
+    <View fullSize key={entry?.id ?? "loading"}>
       <div
         style={{
           display: "grid",
@@ -53,15 +82,23 @@ export const WritingView: React.FC = () => {
                 {journal?.name}
               </Typography.Title>
 
-              <Typography.Title editable level={3}>
-                {entry?.title}
-              </Typography.Title>
+              {entry && (
+                <Typography.Title
+                  editable={{
+                    onChange: (title) => {
+                      setEntry({ ...entry, title });
+                      setSaved(false);
+                    },
+                  }}
+                  level={3}
+                  key={entry.title}
+                >
+                  {entry.title}
+                </Typography.Title>
+              )}
             </Space>
           </Col>
-          <Col>
-            Last saved{" "}
-            {entry?.updateDate && getRelativeDate(new Date(entry.updateDate))}
-          </Col>
+          <Col>{saved && "Saved"}</Col>
         </Row>
         <div
           style={{
@@ -83,6 +120,7 @@ export const WritingView: React.FC = () => {
                 ...entry,
                 text: html,
               });
+              setSaved(false);
             }}
             modules={{
               clipboard: {
