@@ -1,5 +1,14 @@
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
-import { Affix, Col, Layout, Menu, Popconfirm, Row } from "antd";
+import {
+  Affix,
+  Col,
+  Layout,
+  Menu,
+  Popconfirm,
+  Row,
+  Space,
+  Typography,
+} from "antd";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { Journal, Writing } from "src/Common/models/writing";
@@ -81,11 +90,16 @@ export const GlobalRoot: React.FC = () => {
                 zIndex: 1,
               }}
             >
-              <Journals
-                onSelect={(j) => {
-                  setActiveJournal(j);
-                }}
-              />
+              <Space direction="horizontal" size="large">
+                <Journals
+                  onSelect={(j) => {
+                    setActiveJournal(j);
+                  }}
+                />
+                <Typography.Title level={2} style={{ margin: 0 }}>
+                  Intention
+                </Typography.Title>
+              </Space>
             </Col>
             <Col
               className={"no-drag"}
